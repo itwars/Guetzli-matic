@@ -1,0 +1,13 @@
+#!/bin/bash
+
+DIR=$(pwd)
+for file in $(find "$DIR" -name '*.jpg')
+do
+	echo " > shrinking file - $file"
+   SIZEBEFORE=$(stat -f%z $file)
+   echo " + size before :$SIZEBEFORE"
+	guetzli -quality 85 "$file" "$file"
+   SIZEAFTER=$(stat -f%z $file)
+   echo " - size after : $SIZEAFTER"
+   echo " = performance: $((100-(($SIZEAFTER*100)/$SIZEBEFORE)))"
+done
